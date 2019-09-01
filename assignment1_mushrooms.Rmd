@@ -1,0 +1,94 @@
+---
+title: "DATA 607 ASSIGNMENT 1 -  LOADING INTO A DATA FRAME"
+author: "Alain T Kuiete"
+date: "8/31/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Mushrooms Dataset
+## Exploring and inspecting the mushrooms dataset
+```{r}
+mushroom <- read.table('https://raw.githubusercontent.com/AlainKuiete/DATA607/master/agaricus-lepiota.data', sep = ",")
+```
+
+Looking at the head of mushrooms dataset
+```{r}
+head(mushroom)
+```
+
+The tail
+```{r}
+tail(mushroom)
+```
+
+The summary of the dataset
+```{r}
+summary(mushroom)
+```
+
+The structure of the mushrooms dataset
+```{r}
+str(mushroom)
+```
+
+## Subsetting the mushroom dataset
+```{r}
+md <- data.frame(is.consm = mushroom$V1, 
+                 cap.chape = mushroom$V2, 
+                 cap.color = mushroom$V4, 
+                 odor = mushroom$V6, 
+                 ring.type = mushroom$V20,
+                 population = mushroom$V22)
+```
+
+## Structure of the new dataset
+```{r}
+str(md)
+```
+## Summary of the subset
+```{r}
+summary(md)
+```
+
+
+## Changing the abreviation inside the columns
+
+```{r}
+levels(md$is.consm) <- list(edible = "e", poisonous = "p")
+
+levels(md$cap.chape) <- list(bell = "b", conical = "c", convex = "x", flat ="f", knobbed = "k", sunken="s" )
+
+levels(md$cap.color) <- list(brown ="n", buff = "b", cinnamon = "c", gray = "g", green = "r", pink = "p",  purple = "u", red = "e", white = "w", yellow = "y" )
+
+levels(md$odor) <-list(almond = "a", anise = "l", creosote = "c", fishy = "y", foul = "f", musty = "m", none = "n", pungent = "p", spicy = "s" )
+
+levels(md$ring.type) <- list(cobwebby = "c", evanescent = "e", flaring = "f", large = "l", none = "n", pendant = "p", sheathing = "s", zone = "z")
+
+levels(md$population) <- list(abundant = "a", clustered = "c", numerous = "n", scattered = "s", several = "v", solitary = "y" )
+
+```
+```{r}
+str(md)
+```
+
+## Summary of the new dataset
+
+```{r}
+summary(md)
+```
+
+## Create a bar graph
+
+
+```{r}
+library(ggplot2)
+qplot(md$cap.color, main = "Mushroom Cap color Attribute",
+      xlab = "Cap color", ylab = "Count",
+      color = I("red"))
+```
+
+## Mushrooms are most likely to be brown, gray, red, white or yellow.
