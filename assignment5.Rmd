@@ -1,0 +1,95 @@
+---
+title: "Tidying and Transforming Data"
+author: "Alain T Kuiete"
+date: "9/26/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Tyding and Transformation
+
+```{r}
+library(readr)
+library(stringr)
+library(tidyr)
+library(dplyr)
+```
+
+#### Importing csv file from my github
+```{r}
+airline <- read.csv("https://raw.githubusercontent.com/AlainKuiete/DATA607/master/arrival_delays.csv")
+```
+
+#### removing the blank row
+```{r}
+arr.delay <- airline[-3,]
+row.names(arr.delay)<-c(1:4)
+airline
+```
+
+#### Suppressing comma in numeric data
+```{r}
+arr.delay$Seattle <- gsub(",", "",arr.delay$Seattle)
+arr.delay$Phoenix <- gsub(",", "",arr.delay$Phoenix)
+```
+
+#### Filling the blank cells
+```{r}
+arr.delay$X[2] <- arr.delay$X[1]
+arr.delay$X[4] <- arr.delay$X[3]
+arr.delay
+```
+
+
+
+#### Putting the appropriate variables. Los.Angeles, Phoenix,... at the header of columns are values of the variable airline.
+#### First transformatiom  switch column to row and add the intermediate count column
+```{r}
+arr.delay <- gather(arr.delay,"Destination", "Count", 3:7)
+```
+
+#### Second Transformation split the (on time - delayed)column in two column.
+```{r}
+arr.delay <- spread(arr.delay, X.1, Count)
+colnames(arr.delay) <- c("Airline", "Destination", "Delayed", "OnTime")
+
+```
+ 
+
+#### Converting columns Delayed and OnTime to numeric
+```{r}
+arr.delay$Delayed <- as.numeric(arr.delay$Delayed) 
+arr.delay$OnTime <- as.numeric(arr.delay$OnTime)
+arr.delay
+```
+
+
+#### Rate of Arrival delays per flight for Alaska
+```{r}
+AD <- sum(arr.delay$Delayed[which(arr.delay$Airline == "ALASKA")])
+AO <- sum(arr.delay$OnTime[which(arr.delay$Airline == "ALASKA")])
+RA <- AD/(AO + AD)
+RA
+```
+
+### Rate of Arrival delays per flight for AM WEST
+```{r}
+WD <- sum(arr.delay$Delayed[which(arr.delay$Airline == "AM WEST")])
+WO <- sum(arr.delay$OnTime[which(arr.delay$Airline == "AM WEST")])
+RW <- WD/(WO + WD)
+RW
+```
+#### Alaska rate of arriving delayed (13.3%) is higher than AM West rate of arriving delayed (10.9%)
+
+
+
+
+
+
+
+
+
+
