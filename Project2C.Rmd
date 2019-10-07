@@ -1,0 +1,88 @@
+---
+title: "Project 2B"
+author: "Alain T Kuiete"
+date: "10/6/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### Project 2 C 
+
+```{r}
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+```
+
+#### Loading dataset
+```{r}
+cp <- read.csv("https://raw.githubusercontent.com/vincentarelbundock/Rdatasets/master/csv/Ecdat/Star.csv")
+
+```
+
+### Renaming the columns
+```{r}
+ cp <- rename(cp, count = X, math.s = tmathssk, 
+       read.s = treadssk, cls.type = classk, sex = sex,
+       year.exp = totexpk, f.lunch = freelunk, race = race,
+       sch.ivar = schidkn)
+
+```
+
+#### Filter row
+```{r}
+filter(cp, 
+       cls.type == "small.class", 
+       sex == "girl", 
+       race == "black", 
+       f.lunch == "yes")
+```
+
+#### Arrange in descending order
+```{r}
+arrange(cp, desc(count))
+```
+
+#### Select math and read score
+```{r}
+select(cp, math.s, read.s)
+
+ ms <- cp %>% 
+   select(math.s, read.s) %>% 
+   summarise(m = mean(math.s),
+             r = mean(read.s))
+ 
+ ms <- as.numeric(ms)
+```
+
+##### Using helper functions of select starts_with, ends_with, matches, contains
+
+```{r}
+select(cp, starts_with("regular"))
+```
+ 
+ 
+ #### Add columns with mutate
+ 
+```{r}
+ mutate(cp,
+       mp = math.s/ms[1],
+       rp = read.s/ms[2])
+```
+ 
+#### Mapping
+```{r}
+cp %>% 
+      mutate(.,
+      mp = math.s/ms[1],
+      rp = read.s/ms[2]) %>%
+      ggplot(aes(mp,rp, color = race),size = I2) +
+      geom_point(aes(size = sch.ivar))
+  
+  
+```
+
+
