@@ -14,77 +14,83 @@ knitr::opts_chunk$set(echo = TRUE)
 ```{r}
 library(tidyr)
 library(dplyr)
+library(ggplot2)
 ```
 ### Importing dataset
 ```{r}
-ts <- read.csv("https://raw.githubusercontent.com/AlainKuiete/DATA607/master/3-8_ELA_AND_MATH_NYC_SUMMARY_2019.csv")
+ts <- read.csv("https://raw.githubusercontent.com/AlainKuiete/DATA607/master/3-8_ELA_AND_MATH_NYC_SUMMARY_2019.csv", na.strings = "-")
 head(ts)
+str(ts)
 ```
-### Selecting some variables
-```{r}
-ts1 <- ts %>% select(code = BEDS.CODE, Name = NAME, Subject = SUBJECT, TOTAL.TESTED:MEAN.SCALE.SCORE)
-str(ts1)
-
-```
+### Removing the % sign
 
 ```{r}
-ts1 <- ts1 %>% separate(LEVEL.1.PCT,  c("LEVEL.1.PCT", NA)) %>%
+ts <- ts %>% separate(LEVEL.1.PCT,  c("LEVEL.1.PCT", NA)) %>%
                 separate(LEVEL.2.PCT,  c("LEVEL.2.PCT", NA)) %>%
                 separate(LEVEL.3.PCT,  c("LEVEL.3.PCT", NA)) %>%
                 separate(LEVEL.4.PCT,  c("LEVEL.4.PCT", NA)) %>%
                 separate(LEVEL.2.4.PCT,  c("LEVEL.2.4.PCT", NA)) %>%
                 separate(LEVEL.3.4.PCT,  c("LEVEL.3.4.PCT", NA))
- 
-ts1 
+ str(ts)
 ```
-
-
-
-### Converting character to numeric
-
-
-#### Separate %
-```{r}
-ts1
-```
-
 
 
 ##### this removes the column if all your character columns need converted to numeric
 
 ```{r}
-ts1 %>%
-  select(TOTAL.TESTED:MEAN.SCALE.SCORE) %>%
-  replace("-",NA) %>% 
-  mutate_if(is.character,as.numeric) %>%
-  str()
+ts <- ts %>%
+  select(SCHOOL.YEAR.END.DATE:MEAN.SCALE.SCORE) %>%
+  mutate_if(is.character,as.numeric)
+str(ts)
 ```
 
 
 
 ```{r}
-tbl_df(ts1)
-ts1
+tbl_df(ts)
 ```
 
 #### Summarizing
 
 ```{r}
-ts1 %>% group_by(Subject) %>% summarise(count = n(),
-        total1 = mean(MEAN.SCALE.SCORE
-, na.rm = TRUE))
+ts %>% group_by(SUBJECT) %>% summarise(count = n(),
+        PCT.mean =  mean(LEVEL.1.PCT,na.rm = TRUE))
 ```
 
 
 #### Filter and Select
 ```{r}
-#ts %>% filter(Subject == "Grade 3 Math") %>% 
- # select(TOTAL.TESTED)%>%
- # arrange( Subject, Name, BEDS.CODE)
+ts %>% filter(SUBJECT == "Grade 3 Math") %>% 
+  select(SUBJECT, NAME,BEDS.CODE , TOTAL.TESTED)%>%
+  arrange( SUBJECT, NAME, BEDS.CODE)%>%
+  head()
 
 ```
 
+#####Histogram for Leve 1 
+
+```{r}
+ts %>% ggplot(aes(x=LEVEL.1.PCT))+geom_histogram(aes(fill= SUBJECT), color = "Black")
+  
+```
+
+#####Histogram for Leve 2 
+
+```{r}
+ts %>% ggplot(aes(x=LEVEL.2.PCT))+geom_histogram(aes(fill= SUBJECT), color = "Black")
+```
 
 
+#####Histogram for Leve 3 
 
+```{r}
+ts %>% ggplot(aes(x=LEVEL.3.PCT))+geom_histogram(aes(fill= SUBJECT), color = "Black")
+  
+```
 
+#####Histogram for Leve 4 
+
+```{r}
+ts %>% ggplot(aes(x=LEVEL.4.PCT))+geom_histogram(aes(fill= SUBJECT), color = "Black")
+  
+```
