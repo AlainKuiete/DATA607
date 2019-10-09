@@ -388,49 +388,49 @@ South-East Asia 39 800 32 800 28 400 21 800 24 100 25 200 25 600 19 700
 Western Pacific 3 770 3 340 3 850 4 600 4 420 2 860 3 510 3 620 
 World 607 000 561 000 529 000 500 000 483 000 469 000 451 000 435 000 
 World (children aged under 5 years) 444 600 405 000 371 000 344 000 322 000 302 000 283 000 266 000&quot;</code></pre>
-<pre class="r"><code>num_values &lt;- unlist(str_extract_all(gdata,&quot;\\d+&quot;))
+<pre class="r"><code>num_values &lt;- unlist(str_extract_all(gdata,&quot;\\d{3,}&quot;))
 str(num_values)</code></pre>
-<pre><code>##  chr [1:121] &quot;2010&quot; &quot;2011&quot; &quot;2012&quot; &quot;2013&quot; &quot;2014&quot; &quot;2015&quot; &quot;2016&quot; &quot;2017&quot; ...</code></pre>
+<pre><code>##  chr [1:88] &quot;2010&quot; &quot;2011&quot; &quot;2012&quot; &quot;2013&quot; &quot;2014&quot; &quot;2015&quot; &quot;2016&quot; &quot;2017&quot; ...</code></pre>
 <pre class="r"><code>text &lt;- unlist(str_extract_all(gdata, &quot;[[:alpha:]- ]{5,}&quot;))
 str(text)</code></pre>
 <pre><code>##  chr [1:12] &quot;Estimated number of malaria deaths by WHO region&quot; ...</code></pre>
+<pre class="r"><code>years &lt;- num_values[1:8]
+num_mala &lt;- &quot;555&quot;
+for (i in seq(11,120,2)) {
+  num_mala &lt;- c(num_mala, num_values[i])
+}
+num_mala</code></pre>
+<pre><code>##  [1] &quot;555&quot; &quot;517&quot; &quot;489&quot; &quot;467&quot; &quot;446&quot; &quot;432&quot; &quot;413&quot; &quot;403&quot; &quot;480&quot; &quot;400&quot; &quot;300&quot;
+## [12] &quot;460&quot; &quot;070&quot; &quot;340&quot; &quot;520&quot; &quot;160&quot; &quot;800&quot; &quot;400&quot; &quot;100&quot; &quot;600&quot; &quot;770&quot; &quot;850&quot;
+## [23] &quot;420&quot; &quot;510&quot; &quot;607&quot; &quot;561&quot; &quot;529&quot; &quot;500&quot; &quot;483&quot; &quot;469&quot; &quot;451&quot; &quot;435&quot; &quot;444&quot;
+## [34] &quot;405&quot; &quot;371&quot; &quot;344&quot; &quot;322&quot; &quot;302&quot; &quot;283&quot; &quot;266&quot; NA    NA    NA    NA   
+## [45] NA    NA    NA    NA    NA    NA    NA    NA    NA    NA    NA   
+## [56] NA</code></pre>
+<pre class="r"><code>malaria &lt;- matrix(num_values[9:88], ncol = 8, byrow = TRUE)
+malaria &lt;- as.numeric(malaria)
+malaria</code></pre>
+<pre><code>##  [1] 555 446 480  70 800 770 607 483 444 322   0   0 450 280 800 340   0
+## [18]   0 600   0 517 432 400 340 400 850 561 469 405 302   0   0 400 750
+## [35] 800 600   0   0   0   0 489 413 300 520 100 420 529 451 371 283   0
+## [52]   0 320 660 200 860   0   0   0   0 467 403 460 160 600 510 500 435
+## [69] 344 266   0   0 630 300 700 620   0   0   0   0</code></pre>
 <pre class="r"><code>Region &lt;- text[3:8]
-Region</code></pre>
-<pre><code>## [1] &quot;African &quot;               &quot;Americas &quot;             
-## [3] &quot;Eastern Mediterranean &quot; &quot;European &quot;             
-## [5] &quot;South-East Asia &quot;       &quot;Western Pacific &quot;</code></pre>
-<pre class="r"><code>malaria &lt;- matrix(num_values[1:120], nrow = 8)
+malaria &lt;- matrix(num_values[9:88], ncol = 8, byrow = TRUE)
+colnames(malaria) &lt;- years
+rownames(malaria) &lt;- c(&#39;AfricaA&#39;, &#39;AfricaB&#39;,&#39;America&#39;, &#39;Eastern Mediterranean&#39;,&#39;South-East Asia&#39;, &#39;Western Pacific&#39;, &#39;WorldA&#39;, &#39;WorldB&#39;, &#39;WorldC1&#39;,&#39;WorldC2&#39; )
 malaria</code></pre>
-<pre><code>##      [,1]   [,2]  [,3]  [,4]  [,5]  [,6]  [,7] [,8]  [,9]  [,10] [,11]
-## [1,] &quot;2010&quot; &quot;555&quot; &quot;446&quot; &quot;480&quot; &quot;8&quot;   &quot;8&quot;   &quot;0&quot;  &quot;39&quot;  &quot;24&quot;  &quot;3&quot;   &quot;4&quot;  
-## [2,] &quot;2011&quot; &quot;000&quot; &quot;000&quot; &quot;450&quot; &quot;070&quot; &quot;520&quot; &quot;0&quot;  &quot;800&quot; &quot;100&quot; &quot;770&quot; &quot;420&quot;
-## [3,] &quot;2012&quot; &quot;517&quot; &quot;432&quot; &quot;400&quot; &quot;7&quot;   &quot;8&quot;   &quot;0&quot;  &quot;32&quot;  &quot;25&quot;  &quot;3&quot;   &quot;2&quot;  
-## [4,] &quot;2013&quot; &quot;000&quot; &quot;000&quot; &quot;400&quot; &quot;280&quot; &quot;660&quot; &quot;0&quot;  &quot;800&quot; &quot;200&quot; &quot;340&quot; &quot;860&quot;
-## [5,] &quot;2014&quot; &quot;489&quot; &quot;413&quot; &quot;300&quot; &quot;7&quot;   &quot;8&quot;   &quot;0&quot;  &quot;28&quot;  &quot;25&quot;  &quot;3&quot;   &quot;3&quot;  
-## [6,] &quot;2015&quot; &quot;000&quot; &quot;000&quot; &quot;320&quot; &quot;340&quot; &quot;160&quot; &quot;0&quot;  &quot;400&quot; &quot;600&quot; &quot;850&quot; &quot;510&quot;
-## [7,] &quot;2016&quot; &quot;467&quot; &quot;403&quot; &quot;460&quot; &quot;6&quot;   &quot;8&quot;   &quot;0&quot;  &quot;21&quot;  &quot;19&quot;  &quot;4&quot;   &quot;3&quot;  
-## [8,] &quot;2017&quot; &quot;000&quot; &quot;000&quot; &quot;630&quot; &quot;750&quot; &quot;300&quot; &quot;0&quot;  &quot;800&quot; &quot;700&quot; &quot;600&quot; &quot;620&quot;
-##      [,12] [,13] [,14] [,15]
-## [1,] &quot;607&quot; &quot;483&quot; &quot;5&quot;   &quot;000&quot;
-## [2,] &quot;000&quot; &quot;000&quot; &quot;444&quot; &quot;322&quot;
-## [3,] &quot;561&quot; &quot;469&quot; &quot;600&quot; &quot;000&quot;
-## [4,] &quot;000&quot; &quot;000&quot; &quot;405&quot; &quot;302&quot;
-## [5,] &quot;529&quot; &quot;451&quot; &quot;000&quot; &quot;000&quot;
-## [6,] &quot;000&quot; &quot;000&quot; &quot;371&quot; &quot;283&quot;
-## [7,] &quot;500&quot; &quot;435&quot; &quot;000&quot; &quot;000&quot;
-## [8,] &quot;000&quot; &quot;000&quot; &quot;344&quot; &quot;266&quot;</code></pre>
+<pre><code>##                       2010  2011  2012  2013  2014  2015  2016  2017 
+## AfricaA               &quot;555&quot; &quot;000&quot; &quot;517&quot; &quot;000&quot; &quot;489&quot; &quot;000&quot; &quot;467&quot; &quot;000&quot;
+## AfricaB               &quot;446&quot; &quot;000&quot; &quot;432&quot; &quot;000&quot; &quot;413&quot; &quot;000&quot; &quot;403&quot; &quot;000&quot;
+## America               &quot;480&quot; &quot;450&quot; &quot;400&quot; &quot;400&quot; &quot;300&quot; &quot;320&quot; &quot;460&quot; &quot;630&quot;
+## Eastern Mediterranean &quot;070&quot; &quot;280&quot; &quot;340&quot; &quot;750&quot; &quot;520&quot; &quot;660&quot; &quot;160&quot; &quot;300&quot;
+## South-East Asia       &quot;800&quot; &quot;800&quot; &quot;400&quot; &quot;800&quot; &quot;100&quot; &quot;200&quot; &quot;600&quot; &quot;700&quot;
+## Western Pacific       &quot;770&quot; &quot;340&quot; &quot;850&quot; &quot;600&quot; &quot;420&quot; &quot;860&quot; &quot;510&quot; &quot;620&quot;
+## WorldA                &quot;607&quot; &quot;000&quot; &quot;561&quot; &quot;000&quot; &quot;529&quot; &quot;000&quot; &quot;500&quot; &quot;000&quot;
+## WorldB                &quot;483&quot; &quot;000&quot; &quot;469&quot; &quot;000&quot; &quot;451&quot; &quot;000&quot; &quot;435&quot; &quot;000&quot;
+## WorldC1               &quot;444&quot; &quot;600&quot; &quot;405&quot; &quot;000&quot; &quot;371&quot; &quot;000&quot; &quot;344&quot; &quot;000&quot;
+## WorldC2               &quot;322&quot; &quot;000&quot; &quot;302&quot; &quot;000&quot; &quot;283&quot; &quot;000&quot; &quot;266&quot; &quot;000&quot;</code></pre>
 <p>### Tidying</p>
-<pre class="r"><code>malaria &lt;- as.numeric(malaria)
-malaria</code></pre>
-<pre><code>##   [1] 2010 2011 2012 2013 2014 2015 2016 2017  555    0  517    0  489    0
-##  [15]  467    0  446    0  432    0  413    0  403    0  480  450  400  400
-##  [29]  300  320  460  630    8   70    7  280    7  340    6  750    8  520
-##  [43]    8  660    8  160    8  300    0    0    0    0    0    0    0    0
-##  [57]   39  800   32  800   28  400   21  800   24  100   25  200   25  600
-##  [71]   19  700    3  770    3  340    3  850    4  600    4  420    2  860
-##  [85]    3  510    3  620  607    0  561    0  529    0  500    0  483    0
-##  [99]  469    0  451    0  435    0    5  444  600  405    0  371    0  344
-## [113]    0  322    0  302    0  283    0  266</code></pre>
 </div>
 
 

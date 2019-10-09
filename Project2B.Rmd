@@ -30,7 +30,7 @@ World (children aged under 5 years) 444 600 405 000 371 000 344 000 322 000 302 
 
 
 ```{r}
-num_values <- unlist(str_extract_all(gdata,"\\d+"))
+num_values <- unlist(str_extract_all(gdata,"\\d{3,}"))
 str(num_values)
 
 text <- unlist(str_extract_all(gdata, "[[:alpha:]- ]{5,}"))
@@ -38,20 +38,32 @@ str(text)
 
 ```
 
+```{r}
+years <- num_values[1:8]
+num_mala <- "555"
+for (i in seq(11,120,2)) {
+  num_mala <- c(num_mala, num_values[i])
+}
+num_mala
+```
 
 
 ```{r}
+malaria <- matrix(num_values[9:88], ncol = 8, byrow = TRUE)
+malaria <- as.numeric(malaria)
+malaria
+```
+
+```{r}
 Region <- text[3:8]
-Region
-malaria <- matrix(num_values[1:120], nrow = 8)
+malaria <- matrix(num_values[9:88], ncol = 8, byrow = TRUE)
+colnames(malaria) <- years
+rownames(malaria) <- c('AfricaA', 'AfricaB','America', 'Eastern Mediterranean','South-East Asia', 'Western Pacific', 'WorldA', 'WorldB', 'WorldC1','WorldC2' )
 malaria
 ```
  ### Tidying
  
-```{r}
-malaria <- as.numeric(malaria)
-malaria
-```
+
  
 ```{r}
 
