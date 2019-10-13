@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<assignment title="My Prefered Books">
+	<books>
+   		<book>
+     			<ISBN-13>9780199390489</ISBN-13>
+     			<title>INTERPLAY The Process of Interpersonal Communication </title>
+     			<author>Ronald B. Alder, Lawrence B. Rosenfeld, Rusell F., Proctor II</author>
+     			<publisher>OXOFORD University Press </publisher>
+     			<edition_number>13</edition_number>
+     			<copyright>2015</copyright>
+   		</book>
+
+   		<book>
+     			<ISBN-13>9780596009205</ISBN-13>
+     			<title>Head First Java 5.</title>
+     			<author>Kathy Sierra,Bert Bates</author>
+     			<publisher>OXOFORD University Press</publisher>
+     			<edition_number>2</edition_number>
+     			<copyright>2005</copyright>
+   		</book>
+
+   		<book>
+      		<ISBN-13>9780205972241</ISBN-13>
+      		<title>Psychology</title>
+      		<author>Saudra K. Ciccarelli, J. Noland White</author>
+      		<publisher>PEARSON</publisher>
+      		<edition_number>4</edition_number>
+     			<copyright>2015</copyright>
+   		</book>
+  	</books>
+</assignment>

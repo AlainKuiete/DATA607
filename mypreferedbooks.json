@@ -1,0 +1,33 @@
+{
+"assignmemt":{
+    "books":{ 
+      "book": [
+			{
+    			"isbn_13":"9780199390489",
+    			"title":"INTERPLAY The Process of Interpersonal Communication",
+    			"authors":"Ronald B. Alder, Lawrence B. Rosenfeld, Rusell F, Proctor II",
+    			"publisher":"OXOFORD University Press",
+    			"edition_number":"13",
+    			"copyright":"2015"
+  			},
+
+    			{
+    			"isbn_13":"9780596009205",
+    			"title":"Head First Java 5.",
+    			"authors":"Kathy Sierra, Bert Bates",
+    			"publisher":"OREILLY",
+    			"edition_number":"2",
+    			"copyright":"2005"
+  			},
+  			{
+    			"isbn_13":"99780205972241",
+    			"title":"Psychology",
+    			"authors":"Saudra K. Ciccarelli, J. Noland White",
+    			"publisher":"PEARSON",
+    			"edition_number":"4",
+    			"copyright":"2015"
+  			}
+]
+	}
+}
+}
